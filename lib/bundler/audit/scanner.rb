@@ -63,6 +63,9 @@ module Bundler
       # @param [Database] database
       #   The database to scan against.
       #
+      # @param [String] config_dot_file
+      #   The file name of the bundler-audit config file.
+      #
       # @raise [Bundler::GemfileLockNotFound]
       #   The `gemfile_lock` file could not be found within the `root`
       #   directory.
@@ -79,7 +82,7 @@ module Bundler
 
         @lockfile = LockfileParser.new(File.read(gemfile_lock_path))
 
-        config_dot_file_full_path = File.join(@root,config_dot_file)
+        config_dot_file_full_path = File.absolute_path(config_dot_file, @root)
 
         @config = if File.exist?(config_dot_file_full_path)
                     Configuration.load(config_dot_file_full_path)
